@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  db:
+    image: mariadb:10.11
+    container_name: glpi_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: secret_root_password
+      MYSQL_DATABASE: glpidb
+      MYSQL_USER: glpiuser
+      MYSQL_PASSWORD: sua_senha_segura
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "-u", "root", "--password=secret_root_password"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  glpi:
+    image: glpi/glpi:latest
+    container_name: glpi_app
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - glpi_data:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db_data:
+  glpi_data:
