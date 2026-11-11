@@ -1,0 +1,13 @@
+# Volumes e dados locais do Docker
+db_data/
+glpi_data/
+
+# Arquivos de variáveis de ambiente e senhas
+.env
+
+# Arquivos temporários do sistema e IDEs
+.vscode/
+.idea/
+*.log
+Thumbs.db
+Desktop.ini
